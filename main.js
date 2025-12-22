@@ -26,7 +26,7 @@ async function getData(apiURL) {
         container.insertAdjacentHTML(
           "beforeend",
           `
-        <div class = "cards">
+          <div class = "cards">
           <h2>id: ${spell.id}</h2>
           <h2>name: ${spell.name}</h2>
           <h2>incantation: ${spell.incantation || "None"}</h2>
