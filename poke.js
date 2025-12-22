@@ -1,20 +1,47 @@
-import "./style.css";
+let data = [
+  {
+    id: "",
+    name: "",
+    incantation: "",
+    effect: "",
+    canBeVerbal: "",
+    type: "",
+    light: "",
+    creator: "",
+  },
+];
 
-async function getData(/*name*/) {
+const apiUrl = "https://wizard-world-api.herokuapp.com/Spells";
+
+async function getData(apiURL) {
   try {
-    // go get data
-    const response = await fetch(/*paste the link of api using`` /${name}*/);
-    // handle errors
+    const response = await fetch(apiURL);
     if (response.status != 200) {
       throw new Error(response);
     } else {
-      // makes the response into json data we can use
       const data = await response.json();
-      console.log(data);
-      document.getElementById("api-response").textContent = data.name;
+      const spells = data;
+      const container = document.querySelector(".container");
+      spells.forEach((spell) => {
+        container.insertAdjacentHTML(
+          "beforeend",
+          `
+        <div class = "cards">
+          <h2>id: ${spell.id}</h2>
+          <h2>name: ${spell.name}</h2>
+          <h2>incantation: ${spell.incantation || "None"}</h2>
+          <h2>effect: ${spell.effect}</h2>
+          <h2>is it verbal?: ${spell.canBeVerbal || "No"}</h2>
+          <h2>spell type: ${spell.type}</h2>
+          <h2>color: ${spell.light}</h2>
+          <h2>creator: ${spell.creator}</h2>
+        </div>
+        `
+        );
+      });
     }
   } catch (error) {
     console.log(error);
   }
 }
-getData(/*"name"*/);
+getData(apiUrl);
