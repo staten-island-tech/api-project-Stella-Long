@@ -60,7 +60,7 @@ async function getData(apiURL) {
           <h2>hogwartsStudent: ${character.hogwartsStudent}</h2>
           <h2>hogwartsStaff: ${character.hogwartsStaff}</h2>
           <h2>actor: ${character.actor}</h2>
-          <h2>alterante_actor: ${character.alternate_actors}</h2>
+          <h2>alternate_actor: ${character.alternate_actors}</h2>
           <h2>alive: ${character.alive}</h2>
           <h2>image: ${character.image}</h2>
           </div>
