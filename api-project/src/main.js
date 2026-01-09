@@ -2,32 +2,11 @@ let data = [
   {
     id: "",
     name: "",
-    alternate_names: "",
-    species: "",
-    gender: "",
-    house: "",
-    dateOfBirth: "",
-    yearOfBirth: "",
-    wizard: "",
-    ancestry: "",
-    eyeColour: "",
-    hairColour: "",
-    wand: {
-      wood: "",
-      core: "",
-      length: "",
-    },
-    patronus: "",
-    hogwartsStudent: "",
-    hogwartsStaff: "",
-    actor: "",
-    alternate_actors: "",
-    alive: "",
-    image: "",
+    effect: "",
   },
 ];
 
-const apiUrl = "https://hp-api.onrender.com/api/characters";
+const apiURL = "https://wizard-world-api.herokuapp.com/Ingredients";
 
 async function getData(apiURL) {
   try {
@@ -36,40 +15,48 @@ async function getData(apiURL) {
       throw new Error(response);
     } else {
       const data = await response.json();
-      const characters = data;
+      const spells = data;
       const container = document.querySelector(".container");
-      characters.forEach((character) => {
-        container.insertAdjacentHTML(
-          "beforeend",
-          `
-          <div class = "cards">
-          <h2>id: ${character.id}</h2>
-          <h2>name: ${character.name}</h2>
-          <h2>alternate_names: ${character.alternate_names}</h2>
-          <h2>species: ${character.species}</h2>
-          <h2>gender: ${character.gender}</h2>
-          <h2>house: ${character.house}</h2>
-          <h2>dateOfBirth: ${character.dateOfBirth}</h2>
-          <h2>yearOfBirth: ${character.yearOfBirth}</h2>
-          <h2>wizard: ${character.wizard}</h2>
-          <h2>ancestry: ${character.ancestry}</h2>
-          <h2>eyeColor: ${character.eyeColour}</h2>
-          <h2>hairColor: ${character.hairColour}</h2>
-          <h2>wand: ${character.wand}</h2>
-          <h2>patronus: ${character.patronus}</h2>
-          <h2>hogwartsStudent: ${character.hogwartsStudent}</h2>
-          <h2>hogwartsStaff: ${character.hogwartsStaff}</h2>
-          <h2>actor: ${character.actor}</h2>
-          <h2>alternate_actor: ${character.alternate_actors}</h2>
-          <h2>alive: ${character.alive}</h2>
-          <h2>image: ${character.image}</h2>
-          </div>
-        `
-        );
-      });
+      function showSpells(list) {
+        container.innerHTML = "";
+        list.forEach((spell) => {
+          container.insertAdjacentHTML(
+            "afterbegin",
+            `
+              <div id = "cards" class = " m-8 p-8 border-4 border-sky-900 bg-gray-200">
+              <div id="name" class ="font-bold underline underline-offset-4">${spell.name}</div>
+              <div id="id">Id: ${spell.id}</div>
+            `
+          );
+        });
+      }
+      showSpells(spells);
+      function filter(input) {
+        const search = input.toLowerCase();
+        container.innerHTML = "";
+        spells.forEach((spell) => {
+          const searchName = spell.name.toLowerCase();
+          if (searchName.includes(search)) {
+            container.insertAdjacentHTML(
+              "afterbegin",
+              `
+                            <div id = "cards" class = " m-8 p-8 border-4 border-sky-900 bg-gray-200">
+                                <div id="name" class ="font-bold underline underline-offset-4">${spell.name}</div>
+                                <div id="id">Id: ${spell.id}</div>
+                            </div>    
+                            `
+            );
+          }
+        });
+      }
+      document
+        .querySelector("#search input")
+        .addEventListener("input", (event) => {
+          filter(event.target.value);
+        });
     }
   } catch (error) {
     console.log(error);
   }
 }
-getData(apiUrl);
+getData(apiURL);

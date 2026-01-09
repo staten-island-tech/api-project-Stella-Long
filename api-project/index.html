@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>api-project</title>
+    <link href="/src/style.css" rel="stylesheet" />
   </head>
-  <body>
-    <section class="container bg-blue-500 w-full min-h-96">
-      <div id="cards">
-        <h2 class="cards-title"></h2>
-      </div>
+  <body class="bg-sky-100">
+    <h1 class="text-center text-4xl text-indigo-950 font-serif font-bold m-8">
+      Harry Potter Ingredients
+    </h1>
+
+    <div id="search" class="p-8">
+      <input
+        type="text"
+        placeholder="Search..."
+        class="p-2 bg-gray-200 w-full"
+      />
+    </div>
+
+    <section
+      class="container bg-sky-100 flex-wrap grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
+    >
+      <div id="cards" class=""></div>
     </section>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
