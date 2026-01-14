@@ -1,60 +1,70 @@
-let data = [
-  {
-    id: "",
-    name: "",
-  },
-];
+import "./style.css";
 
-const apiUrl = "https://wizard-world-api.herokuapp.com/Ingredients";
+const URL = "https://wizard-world-api.herokuapp.com/Ingredients";
+let ingredients = [];
 
-async function getData(apiURL) {
+function inject(item) {
+  const entriesContainer = document.querySelector(".api-response");
+
+  entriesContainer.insertAdjacentHTML(
+    "beforeend",
+    `<div class="card">
+      <h1>${item.name}</h1>
+    </div>`
+  );
+}
+
+async function getData(URL) {
   try {
-    const response = await fetch(apiURL);
-    if (response.status != 200) {
-      throw new Error(response);
-    } else {
-      const data = await response.json();
-      const ingredients = data;
-      const container = document.querySelector(".container");
-      function showIngredients(list) {
-        container.innerHTML = "";
-        list.forEach((ingredient) => {
-          container.insertAdjacentHTML(
-            "afterbegin",
-            `
-              <div id = "cards" class = " m-8 p-8 border-4 border-sky-900 bg-gray-200">
-                <div id="name" class ="font-bold underline underline-offset-4">${ingredient.name}</div>
-              </div>    
-            `
-          );
-        });
-      }
-      showIngredients(ingredients);
-      function filter(input) {
-        const search = input.toLowerCase();
-        container.innerHTML = "";
-        ingredients.forEach((ingredient) => {
-          const searchName = ingredient.name.toLowerCase();
-          if (searchName.includes(search)) {
-            container.insertAdjacentHTML(
-              "afterbegin",
-              `
-                <div id = "cards" class = " m-8 p-8 border-4 border-sky-900 bg-gray-200">
-                  <div id="name" class ="font-bold underline underline-offset-4">${ingredient.name}</div>
-                </div>    
-              `
-            );
-          }
-        });
-      }
-      document
-        .querySelector("#search input")
-        .addEventListener("input", (event) => {
-          filter(event.target.value);
-        });
+    const response = await fetch(URL);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
     }
+
+    const data = await response.json();
+    ingredients = data;
+
+    document.querySelector(".api-response").innerHTML = "";
+    ingredients.forEach(inject);
+
+    setupSearch();
   } catch (error) {
-    console.log(error);
+    console.log("Failed to Load", error);
   }
 }
-getData(apiURL);
+
+function setupSearch() {
+  const form = document.querySelector("#search-form");
+  const input = document.querySelector(".search-input2");
+  const results = document.querySelector(".api-response");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const searchTerm = input.value.trim().toLowerCase();
+
+    if (!searchTerm) {
+      results.innerHTML = "<p>Please enter an ingredient name.</p>";
+      return;
+    }
+
+    results.innerHTML = "<p>Searching...</p>";
+
+    const filtered = ingredients.filter((item) =>
+      item.name.toLowerCase().includes(searchTerm)
+    );
+
+    results.innerHTML = "";
+
+    if (filtered.length === 0) {
+      results.innerHTML = "<p>No matching ingredients found.</p>";
+      return;
+    }
+
+    filtered.forEach(inject);
+  });
+}
+
+getData(URL);
+
